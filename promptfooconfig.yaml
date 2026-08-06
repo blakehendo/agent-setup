@@ -1,0 +1,68 @@
+# Your first eval. Config, not code — this file is the artifact.
+#
+# Run it:   npx promptfoo@latest eval
+# View it:  npx promptfoo@latest view
+#
+# What this measures: can a model correctly classify which agent-payment
+# protocol fits a given transaction? Nobody has published a benchmark for
+# this. It's a 20-line version of week 8-12's real project.
+
+description: "Protocol selection — can frontier models pick the right payment rail?"
+
+prompts:
+  - |
+    You are routing a payment for an AI agent. Available rails:
+
+    - x402: HTTP 402 + stablecoin (USDC) settlement. Per-request micropayments.
+      No accounts. Sub-cent capable. Crypto rail.
+    - ACP (Agentic Commerce Protocol): card/fiat via Shared Payment Tokens.
+      Merchant of record stays the merchant. Retail checkout.
+    - AP2: authorization layer, not a rail. Signed Intent/Cart/Payment mandates
+      as verifiable credentials. Use when delegated authority must be provable.
+    - ACH: bank transfer. Days to settle. Very low fee. High value.
+
+    Transaction: {{scenario}}
+
+    Answer with ONLY the rail name. No explanation.
+
+providers:
+  - anthropic:messages:claude-opus-4-5
+  - openai:gpt-5
+  - google:gemini-3-pro
+
+tests:
+  - vars:
+      scenario: "An agent pays $0.003 to query a weather API, once per minute, for a month."
+    assert:
+      - type: contains
+        value: x402
+
+  - vars:
+      scenario: "An agent buys a $240 pair of running shoes from a Shopify merchant on the user's behalf."
+    assert:
+      - type: contains
+        value: ACP
+
+  - vars:
+      scenario: "A company pays a $180,000 invoice to a vendor it has worked with for six years."
+    assert:
+      - type: contains
+        value: ACH
+
+  - vars:
+      scenario: "A user grants an agent authority to book travel under $2,000 over the next 30 days. The agent must be able to prove later that the user actually authorized the specific purchase it made."
+    assert:
+      - type: contains
+        value: AP2
+
+  # The interesting one. There is no clean answer — it needs an authorization
+  # layer AND a settlement rail. Watch whether models notice, or just pick one.
+  - vars:
+      scenario: "An agent with a $500 monthly cap pays $12 for a dataset from a seller it has never transacted with, and the seller demands cryptographic proof the agent is authorized."
+    assert:
+      - type: llm-rubric
+        value: "Response acknowledges that this needs both an authorization layer (AP2) and a settlement rail (x402), OR explicitly flags that a single rail is insufficient. Picking exactly one rail with no caveat fails."
+
+defaultTest:
+  options:
+    provider: anthropic:messages:claude-opus-4-5
