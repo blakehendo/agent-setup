@@ -21,4 +21,10 @@ First run — no prior entry to diff against, so this is a baseline snapshot of 
 - **News**: Cloudflare Wallets announced Aug 4 — spending-capped, identifiable agent wallets built on x402 rails. Relevant to delegated-authority scope: spend caps are a concrete enforcement point. https://www.explainx.ai/blog/cloudflare-wallets-ai-agent-payments-august-2026
 
 - **News**: KYA-OS (formerly MCP-Identity) donated to the Decentralized Identity Foundation in March 2026, uses DIDs/VCs for agent identity. Baseline note, not new this week. https://knowyouragent.network/every-company-building-ai-agent-identity-in-2026
+
+## 2026-08-12
+
+ACK, AP2, and the Agentic Commerce Protocol (OpenAI/Stripe) repos are unchanged since Aug 11 — no new commits or releases. Catena remains unreachable (network egress block); x402.org is also now confirmed blocked from this environment. No news items found dated after Aug 11.
+
+- **x402 (x402-foundation/x402 GitHub, not covered in the Aug 11 governance-only check)**: Active pre-release commits Aug 8–11 — a facilitator transaction-limit config PR (`feat(svm): make facilitator transaction limits operator-configurable`) plus new docs on payment flows and settle phases. No tag or release cut yet. Introduces an operator-configurable spend-cap primitive at the facilitator layer — a candidate enforcement point to watch, not yet something to build eval fixtures against since it's unreleased. https://github.com/x402-foundation/x402/pull/3128
 </content>
