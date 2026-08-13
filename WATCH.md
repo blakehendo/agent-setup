@@ -27,4 +27,11 @@ First run — no prior entry to diff against, so this is a baseline snapshot of 
 ACK, AP2, and the Agentic Commerce Protocol (OpenAI/Stripe) repos are unchanged since Aug 11 — no new commits or releases. Catena remains unreachable (network egress block); x402.org is also now confirmed blocked from this environment. No news items found dated after Aug 11.
 
 - **x402 (x402-foundation/x402 GitHub, not covered in the Aug 11 governance-only check)**: Active pre-release commits Aug 8–11 — a facilitator transaction-limit config PR (`feat(svm): make facilitator transaction limits operator-configurable`) plus new docs on payment flows and settle phases. No tag or release cut yet. Introduces an operator-configurable spend-cap primitive at the facilitator layer — a candidate enforcement point to watch, not yet something to build eval fixtures against since it's unreleased. https://github.com/x402-foundation/x402/pull/3128
+
+## 2026-08-13
+
+ACK, AP2, and the Agentic Commerce Protocol repos are unchanged since last check — no new commits or releases. Catena and x402.org remain blocked from this environment (persistent source gap, not new). No news items found dated in the last 24-48h beyond what's already logged.
+
+- **x402 (x402-foundation/x402)**: PR #3132 merged Aug 12 — the TypeScript SVM "exact" static payment path now requires validating the TransferChecked instruction discriminator (`data[0] === 12`), closing a gap where it checked the token program at instruction index 2 but not the discriminator itself. Python, Go, and the smart-wallet path already had this check; TS was the outlier. **DESIGN IMPACT** — any eval fixture exercising SVM/Solana payment verification via the TS SDK should assume a malformed or spoofed TransferChecked instruction now fails closed, where before it may have passed. https://github.com/x402-foundation/x402/pull/3132
+- **x402 (x402-foundation/x402)**: Also Aug 12 — Go SDK payment flows (#3115) and an SVM "upto" payment flow for TS (#3094), plus SVM payment scheme docs (#3135). Extends x402 settlement rails from EVM-only to Solana across Go, TS, and (already) Python. Aug 11 versioning commits (ts/python/go) suggest a release is being staged, but no tag exists yet on the Releases page — still unreleased. https://github.com/x402-foundation/x402/pull/3094
 </content>
